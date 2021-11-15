@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/tbusch74/10-Employee-Tracker#readme",
   "dependencies": {
-    "express": "^4.17.1",
+    "console.table": "^0.10.0",
     "inquirer": "^8.2.0",
     "mysql2": "^2.3.3"
   }
