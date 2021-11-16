@@ -1,29 +1,25 @@
-const db = require('../db/connection')
+const db = require('../db/connection');
+const cTable = require('console.table');
 
-const viewAllDepartments = function(){
-  return new Promise ((resolve, reject) => {
-    db.query('SELECT * FROM department', (err, row) => {
-        if (err) {
-          reject(err)
-        }
-        resolve({
-          row
-        }) 
-    })
-  })
-};
 
-const addDepartment = function(departmentName){
-  return new Promise ((resolve, reject) => {
-    db.query('INSERT INTO department (name) VALUES (?)', departmentName, (err, result) => {
-      if (err) {
-        reject(err)
-      }
-      resolve(
-        
-      )
+const addDepartment = function (departmentName){
+  db.promise().query('INSERT INTO department (name) VALUES (?)', departmentName)
+  .then(() => {
+    console.log(departmentName + ' was added to the department table');
     })
+  .then(() => {
+    viewAllDepartments()
   })
 }
+
+const viewAllDepartments = function(){
+  db.promise().query('SELECT * FROM department')
+  .then(([rows]) => {
+    console.log('')
+    console.table(rows) 
+  })
+}
+
+
 
 module.exports = {viewAllDepartments, addDepartment}
