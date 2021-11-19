@@ -8,12 +8,12 @@ VALUES
 
 INSERT INTO employee_role (title, salary, department_id)
 VALUES
-    ('Engineer', '85000','2'),
-    ('Engineer', '90000','3'),
+    ('R&D Engineer', '85000','2'),
+    ('Quality Engineer', '90000','3'),
     ('Boss Man', '250000','5'),
     ('HR Specialist', '60000','4'),
     ('Salesman', '50000','1'),
-    ('Engineer', '100000','2'),
+    ('Senior Engineer', '100000','2'),
     ('Jr. Engineer', '50000','2');
 
 INSERT INTO employee (first_name, last_name,role_id,manager_id)

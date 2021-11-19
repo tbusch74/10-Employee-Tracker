@@ -2,7 +2,7 @@ const inquirer = require('inquirer');
 const cTable = require('console.table');
 const db = require('./db/connection');
 const {viewAllDepartments, addDepartment} = require('./utils/departments')
-const {viewAllEmployees, addEmployee} = require('./utils/employees')
+const {viewAllEmployees, addEmployee, editEmployeeRole} = require('./utils/employees')
 const {viewAllRoles, addRole} = require('./utils/roles')
 
 const startDb = function(){
@@ -25,18 +25,18 @@ const startPrompt = function() {
   .then (({action}) => {
     switch(action){
       case 'View all departments':
-          viewAllDepartments();
-          nextPrompt();
+          viewAllDepartments()
+            startPrompt();
         break;
 
       case 'View all roles':
         viewAllRoles();
-        nextPrompt();
+        startPrompt();
         break;
 
       case 'View all employees':
-        viewAllEmployees();
-        nextPrompt();
+          viewAllEmployees()
+          startPrompt();
         break;
 
       case 'Add a department':
@@ -51,7 +51,7 @@ const startPrompt = function() {
           addDepartment(departmentName)
         })
         .then(() => {
-          nextPrompt();
+          startPrompt();
         })
         break;
       case 'Add a role':
@@ -80,18 +80,16 @@ const startPrompt = function() {
               addRole(roleName, roleSalary, roleDepartment)
             })
             .then(() => {
-              nextPrompt();
+              startPrompt();
             }) 
           })
         }
         rolePrompt()
         break;
       case 'Add an employee':
-        async function employeePrompt () {
+        async function addEmployeePrompt () {
           const roleInfo = await db.promise().query('SELECT * FROM employee_role')
-          console.log(roleInfo[0])
           const managerInfo = await db.promise().query('SELECT * FROM employee')
-          console.log(managerInfo[0])
           inquirer.prompt([
             {
             type: 'input',
@@ -120,17 +118,41 @@ const startPrompt = function() {
             addEmployee(employeeFirstName, employeeLastName, role, manager)
           })
           .then(() => {
-            nextPrompt()
+            startPrompt()
           })   
         }
-      employeePrompt()
-      break
+        addEmployeePrompt()
+        break;
+      case 'Update an employee role':
+        async function updateEmployeePrompt(){
+          const employeeInfo = await db.promise().query('SELECT * FROM employee')
+          const roleInfo = await db.promise().query('SELECT * FROM employee_role')
+          inquirer.prompt([
+            {
+              type: 'rawlist',
+              name: 'editEmployee',
+              message: "Whose role would you like to update",
+              choices: (employeeInfo[0]).map((row) => ({ name: (row.first_name + ' ' + row.last_name), value: row.id }))
+            },
+            {
+              type:'rawlist',
+              name: 'editRole',
+              message: 'What role do you want to assign to this employee?',
+              choices: (roleInfo[0]).map((row) => ({ name: row.title, value: row.id }))
+            }
+          ])
+          .then(({editEmployee,editRole}) => {
+            editEmployeeRole(editEmployee,editRole)
+          })
+          .then(() => {
+            startPrompt()
+          })   
+        }
+        updateEmployeePrompt()
+        break
     }
-  })
+  }) 
 }
-const nextPrompt = function() {
-  startPrompt()
-}
+
 startDb();
 
-module.exports = nextPrompt
