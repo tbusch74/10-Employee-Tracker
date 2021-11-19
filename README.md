@@ -19,9 +19,9 @@
   
   ## Usage
 
-  This application allows the user to input a note title and description shown below. This will then be saved for future reference. Click on each individual notes to see the note details.
+  This application runs on the command line and allows the user to input and edit employee information. 
   
-  ![Note-Taker Screenshot](/assets/images/screenshot.JPG)
+  ![Employee-Tracker Screenshot](/assets/images/screenshot.JPG)
 
   
   ## License
@@ -29,6 +29,8 @@
   This project is governed by the terms stated in the MIT License. A copy of the license can be found at https://choosealicense.com/licenses/mit/
   
   ## Questions
+
+  A video walkthrough of this app can be found at <https://watch.screencastify.com/v/lrIIfcd9vRVjIqk1d5AC>
 
   View this project and my other projects at <https://github.com/tbusch74>
 
